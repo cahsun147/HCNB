@@ -1,11 +1,16 @@
 import os
+from dotenv import load_dotenv
 import feedparser
-from telegram import Bot, ParseMode
+from telegram import Bot
+from telegram.constants import ParseMode
 import logging
 import asyncio
 
+# Load environment variables from .env file
+load_dotenv()
+
 # Tentukan path untuk file log di dalam direktori proyek
-log_file = os.path.join(os.path.dirname(__file__), 'newsbot.log')
+log_file = os.path.join(os.path.dirname(__file__), 'output.log')
 
 # Setting up logging
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(message)s')
@@ -25,8 +30,9 @@ rss_urls = [
 ]
 
 # Token API dari BotFather
-TOKEN = '7454203929:AAFZfhC14B11XaOSCDTYSVkazEZPposSGJU'
-CHAT_ID = '-1002234171850'  # ID grup atau channel Telegram Anda
+
+TOKEN = os.getenv('TELEGRAM_BOT_TOKEN') # Mengambil token dari environment variable
+CHAT_ID = os.getenv('TELEGRAM_CHAT_ID') # Mengambil chat ID dari environment variable
 
 def format_message(news):
     message = f"*{news['title']}*\n\n" \
